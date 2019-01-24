@@ -3,3 +3,6 @@ Unity template which allows composers to test bridge transitions between two the
 
 Video Tutorial:
 https://www.youtube.com/watch?v=on8D3vMwLdE
+
+Optimized for Unity Version:
+2018.3.1f1
