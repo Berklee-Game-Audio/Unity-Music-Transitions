@@ -902,7 +902,7 @@ MonoBehaviour:
   useIntroduction: 0
   introductionAudioClip: {fileID: 8300000, guid: 1abd2c0d1c162442ea735d24779da94c,
     type: 3}
-  introductionOverlapTime: 1
+  introductionOverlapTime: 0
 --- !u!82 &1585240203
 AudioSource:
   m_ObjectHideFlags: 0
