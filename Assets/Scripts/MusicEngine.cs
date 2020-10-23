@@ -22,10 +22,12 @@ public class MusicEngine : MonoBehaviour {
 
 	public AudioSource transitionAudioSource;
 
-	public AudioMixerSnapshot musicBusAOn;
-	public AudioMixerSnapshot musicBusAOff;
-	public AudioMixerSnapshot musicBusBOn;
-	public AudioMixerSnapshot musicBusBOff;
+	//public AudioMixerSnapshot musicBusAOn;
+	//public AudioMixerSnapshot musicBusAOff;
+	//public AudioMixerSnapshot musicBusBOn;
+	//public AudioMixerSnapshot musicBusBOff;
+	public AudioMixer musicMixerBusA;
+	public AudioMixer musicMixerBusB;
 
 	private float timeElapsed = 0.0f;
 	private float nextPlayTime = 0.0f;
@@ -45,14 +47,14 @@ public class MusicEngine : MonoBehaviour {
 		if(useIntroduction && introductionAudioClip != null){
 			//hooray we have an introduction
 			transitionAudioSource.clip = introductionAudioClip;
-			musicBusAOff.TransitionTo (0.0f);
-			musicBusBOff.TransitionTo (0.0f);
+			StartCoroutine(FadeMixerGroup.StartFade(musicMixerBusA, "masterVolume", 0.0f, 0.0f));
+			StartCoroutine(FadeMixerGroup.StartFade(musicMixerBusB, "masterVolume", 0.0f, 0.0f));
 
 		} else { 
 			musicAAudioSource.clip = musicA;
 			musicBAudioSource.clip = musicB;
-			musicBusAOff.TransitionTo (0.0f);
-			musicBusBOff.TransitionTo (0.0f);
+			StartCoroutine(FadeMixerGroup.StartFade(musicMixerBusA, "masterVolume", 0.0f, 0.0f));
+			StartCoroutine(FadeMixerGroup.StartFade(musicMixerBusB, "masterVolume", 0.0f, 0.0f));
 		} 
 			
 
@@ -60,28 +62,34 @@ public class MusicEngine : MonoBehaviour {
 
 	void Start () {
 		Debug.Log ("Music engine has started");
-
-		if(useIntroduction && introductionAudioClip != null){
-			Debug.Log("Playing introduction.");
-			transitionAudioSource.Play();
-			nextPlayTime = introductionAudioClip.length - introductionOverlapTime;
-			musicBusA = false;
-			playingTransition = true;
-			//musicBAudioSource.Play ();
-			//musicBusBOn.TransitionTo (0.0f);
-		} else {
-			Debug.Log("No introduction.");
-			playingTransition = false;
-			musicAAudioSource.Play ();
-			//musicBAudioSource.Play ();
-			musicBusAOn.TransitionTo (musicAFadeInTime);
-		}
+		StartCoroutine(StartMusic());
 
 	}
 
 	// Update is called once per frame
 	void Update () {
 	
+	}
+
+	IEnumerator StartMusic()
+	{ 
+		yield return new WaitForSeconds(1.0f);
+
+		if (useIntroduction && introductionAudioClip != null)
+		{
+			Debug.Log("Playing introduction.");
+			transitionAudioSource.Play();
+			nextPlayTime = introductionAudioClip.length - introductionOverlapTime;
+			musicBusA = false;
+			playingTransition = true;
+		}
+		else
+		{
+			Debug.Log("No introduction.");
+			playingTransition = false;
+			musicAAudioSource.Play();
+			StartCoroutine(FadeMixerGroup.StartFade(musicMixerBusA, "masterVolume", musicAFadeInTime, 80.0f));
+		}
 	}
 
 	// 
@@ -94,12 +102,14 @@ public class MusicEngine : MonoBehaviour {
 					FinishSwitchingToB ();
 					musicBusA = false;
 					musicAAudioSource.Stop ();
-					musicBusAOff.TransitionTo (0.0f);
+				
+					StartCoroutine(FadeMixerGroup.StartFade(musicMixerBusA, "masterVolume", 0.0f, 0.0f));
 				} else {
 					FinishSwitchingToA ();
 					musicBusA = true;
 					musicBAudioSource.Stop ();
-					musicBusBOff.TransitionTo (0.0f);
+					
+					StartCoroutine(FadeMixerGroup.StartFade(musicMixerBusB, "masterVolume", 0.0f, 0.0f));
 				}
 					
 				playingTransition = false;
@@ -108,8 +118,10 @@ public class MusicEngine : MonoBehaviour {
 	}
 
 	void OnDestroy(){
-		musicBusAOff.TransitionTo (0.0f);
-		musicBusBOff.TransitionTo (0.0f);
+		
+		//StartCoroutine(FadeMixerGroup.StartFade(musicMixerBusA, "masterVolume", 0.0f, 0.0f));
+		
+		//StartCoroutine(FadeMixerGroup.StartFade(musicMixerBusB, "masterVolume", 0.0f, 0.0f));
 		Debug.Log ("The music engine object has been destroyed.");
 	}
 
@@ -129,7 +141,8 @@ public class MusicEngine : MonoBehaviour {
 		playingTransition = true;
 
 		//fade out music bus A
-		musicBusAOff.TransitionTo (musicAFadeOutTime);
+		
+		StartCoroutine(FadeMixerGroup.StartFade(musicMixerBusA, "masterVolume", musicAFadeOutTime, 0.0f));
 
 		//musicBusBOn.TransitionTo (0.0f);
 
@@ -139,7 +152,8 @@ public class MusicEngine : MonoBehaviour {
 		Debug.Log ("Finish switching to B");
 		musicBAudioSource.clip = musicB;
 		musicBAudioSource.Play ();
-		musicBusBOn.TransitionTo (musicBFadeInTime);
+		
+		StartCoroutine(FadeMixerGroup.StartFade(musicMixerBusB, "masterVolume", musicBFadeInTime, 80.0f));
 
 	}
 
@@ -157,7 +171,8 @@ public class MusicEngine : MonoBehaviour {
 		playingTransition = true;
 
 		//fade out music bus A
-		musicBusBOff.TransitionTo (musicBFadeOutTime);
+		
+		StartCoroutine(FadeMixerGroup.StartFade(musicMixerBusB, "masterVolume", musicBFadeOutTime, 0.0f));
 
 		//musicBusBOn.TransitionTo (0.0f);
 
@@ -167,7 +182,8 @@ public class MusicEngine : MonoBehaviour {
 		Debug.Log ("Finish switching to A");
 		musicAAudioSource.clip = musicA;
 		musicAAudioSource.Play ();
-		musicBusAOn.TransitionTo (musicAFadeInTime);
+		
+		StartCoroutine(FadeMixerGroup.StartFade(musicMixerBusA, "masterVolume", musicAFadeInTime, 80.0f));
 
 	}
 

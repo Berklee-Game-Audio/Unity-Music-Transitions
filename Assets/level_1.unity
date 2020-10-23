@@ -878,7 +878,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1585240197}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.09, y: 2.7, z: -0.48}
+  m_LocalPosition: {x: 0.09, y: 3.8, z: -0.48}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -897,8 +897,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   musicA: {fileID: 8300000, guid: 99cef919fc2ea440882033bbc2e86f17, type: 3}
-  musicAFadeInTime: 1.6
-  musicAFadeOutTime: 3.1
+  musicAFadeInTime: 2
+  musicAFadeOutTime: 2
   musicB: {fileID: 8300000, guid: 5ae790c4921f74fc487e28949d1f83ad, type: 3}
   musicBFadeInTime: 3.1
   musicBFadeOutTime: 3.1
@@ -909,14 +909,12 @@ MonoBehaviour:
   musicAAudioSource: {fileID: 1585240205}
   musicBAudioSource: {fileID: 1585240204}
   transitionAudioSource: {fileID: 1585240203}
-  musicBusAOn: {fileID: 24592094, guid: 0523cd7aa4d054aabaec23ecd8482fc1, type: 2}
-  musicBusAOff: {fileID: 24500003, guid: 0523cd7aa4d054aabaec23ecd8482fc1, type: 2}
-  musicBusBOn: {fileID: 24594348, guid: 8c114d92e635d4f6ebc9232d8f744216, type: 2}
-  musicBusBOff: {fileID: 24500003, guid: 8c114d92e635d4f6ebc9232d8f744216, type: 2}
+  musicMixerBusA: {fileID: 24100000, guid: 0523cd7aa4d054aabaec23ecd8482fc1, type: 2}
+  musicMixerBusB: {fileID: 24100000, guid: 8c114d92e635d4f6ebc9232d8f744216, type: 2}
   useIntroduction: 0
   introductionAudioClip: {fileID: 8300000, guid: 1abd2c0d1c162442ea735d24779da94c,
     type: 3}
-  introductionOverlapTime: 2
+  introductionOverlapTime: 0
 --- !u!82 &1585240203
 AudioSource:
   m_ObjectHideFlags: 0
