@@ -78,8 +78,11 @@ public class MusicEngine : MonoBehaviour {
 		if (useIntroduction && introductionAudioClip != null)
 		{
 			Debug.Log("Playing introduction.");
+			musicAAudioSource.Stop();
+			musicBAudioSource.Stop();
 			transitionAudioSource.Play();
 			nextPlayTime = introductionAudioClip.length - introductionOverlapTime;
+			Debug.Log("nextPlayTime: " + nextPlayTime);
 			musicBusA = false;
 			playingTransition = true;
 		}
