@@ -44,6 +44,18 @@ public class MusicEngine : MonoBehaviour {
 	void Awake () {
 		Debug.Log ("Music engine is awake");
 		
+		// Preload audio data to prevent stutter and timing issues
+
+		if (musicA != null) musicA.LoadAudioData();
+
+		if (musicB != null) musicB.LoadAudioData();
+
+		if (transitionAToB != null) transitionAToB.LoadAudioData();
+
+		if (transitionBToA != null) transitionBToA.LoadAudioData();
+
+		if (useIntroduction && introductionAudioClip != null) introductionAudioClip.LoadAudioData();
+		
 		if(useIntroduction && introductionAudioClip != null){
 			//hooray we have an introduction
 			transitionAudioSource.clip = introductionAudioClip;
@@ -105,13 +117,13 @@ public class MusicEngine : MonoBehaviour {
 					FinishSwitchingToB ();
 					musicBusA = false;
 					musicAAudioSource.Stop ();
-				
+					musicAAudioSource.time = 0f; 
 					StartCoroutine(FadeMixerGroup.StartFade(musicMixerBusA, "masterVolume", 0.0f, 0.0f));
 				} else {
 					FinishSwitchingToA ();
 					musicBusA = true;
 					musicBAudioSource.Stop ();
-					
+					musicBAudioSource.time = 0f;
 					StartCoroutine(FadeMixerGroup.StartFade(musicMixerBusB, "masterVolume", 0.0f, 0.0f));
 				}
 					
